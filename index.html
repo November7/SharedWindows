@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #000;
+            
+        }
+        #output {
+            color: #fff;
+        }
+        #img {
+            background: url('img/img.jpg') no-repeat center;
+            width: 1500px;
+            height: 1000px;
+        }
+    </style>
+</head>
+<body>
+    <div id="img"></div>
+  
+    <script>
+        let _X = window.screenX;
+        let _Y = window.screenY;
+        let img = document.getElementById("img")
+        img.style.position = "absolute";
+
+        var interval = setInterval(function(){
+            
+            
+            img.style.left = -window.screenX+'px';
+            img.style.top = -window.screenY+'px';
+
+            _X = window.screenX;
+            _Y = window.screenY;
+        }, 1);
+    </script>
+</body>
+</html>
