@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shared Windows ver:2.0</title>
+</head>
+<body>
+    <div id="out"></div>
+    <textarea name="" id="list" cols="30" rows="10"></textarea>
+    <script>
+        let out = document.getElementById("out");
+        let list = document.getElementById("list");
+        let shwndid;
+
+        window.onload = function(e) {
+            let n = 0;
+            if(localStorage.getItem("shwndid")) {
+                n = parseInt(localStorage.getItem("shwndid")) + 1;
+                
+            } else {
+                n = 1;
+            }
+
+            localStorage.setItem("shwndid", n);
+
+            if(sessionStorage.getItem("shwndid")) {
+                //refreshed
+                out.innerHTML = "refreshed";
+            } else {
+                //first load
+                sessionStorage.setItem("shwndid", n);
+                out.innerHTML = "first load";
+                
+            }            
+        }
+
+        
+        var interval = setInterval(function() {       
+
+            if(localStorage.getItem("shwndid")) {
+                out.innerHTML = "num: "+localStorage.getItem("shwndid") +" id: "+sessionStorage.getItem("shwndid"); 
+                localStorage.setItem("shwndid"+parseInt(sessionStorage.getItem("shwndid")),window.screenX+" "+window.screenY); 
+            }
+            list.innerHTML= "";
+            for(let i=1;i<=parseInt(localStorage.getItem("shwndid"));i++) {
+                list.innerHTML += localStorage.getItem("shwndid"+i) + "\n";
+            }
+
+        }, 0);
+
+
+        window.onunload = function (e) {
+        
+            let n = parseInt(localStorage.getItem("shwndid"));
+            if(n>1) {
+                n--;
+                localStorage.setItem("shwndid", n);
+            }
+            else {
+                localStorage.removeItem("shwndid");
+            }           
+        
+        };
+        
+    </script>
+</body>
+</html>

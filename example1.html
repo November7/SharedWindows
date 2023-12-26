@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Shared Windows ver:1.0</title>
     <style>
         body {
             background-color: #000;
@@ -24,18 +24,12 @@
     <div id="img"></div>
   
     <script>
-        let _X = window.screenX;
-        let _Y = window.screenY;
         let img = document.getElementById("img")
 
-        var interval = setInterval(function(){
-            
-            
+        var interval = setInterval(function() {       
             img.style.left = -window.screenX+'px';
-            img.style.top = -window.screenY+'px';
+            img.style.top  = -window.screenY+'px';
 
-            _X = window.screenX;
-            _Y = window.screenY;
         }, 0);
     </script>
 </body>
