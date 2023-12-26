@@ -9,75 +9,60 @@
     <div id="out"></div>
     <textarea readonly placeholder="..." id="list" cols="30" rows="10"></textarea>
     <script>
+        function saveState() {
+            
+        }
+
+
+
         let out = document.getElementById("out");
         let list = document.getElementById("list");
         let shwndid;
 
         window.onload = function(e) {
+            let ss = sessionStorage.getItem("shwndid");
+            let ls = localStorage.getItem("shwndid");
             let n = 0;
-            if(localStorage.getItem("shwndid")) {
-                let l = localStorage.getItem("shwndid")
-                let arr = l.split(",");
-                
-                n = arr.length + 1;
-                localStorage.setItem("shwndid", l+","+n);
-                
+            if(ls) {
+                let arr = ls.split(",");
+                if(ss) {
+                    //refreshed window   
+                } else {
+                    //first load this window
+                    ss = arr.length + 1;  
+                    sessionStorage.setItem("shwndid",ss);          
+                }
+                arr.push(ss);
+                ls = arr.join(",");
+                localStorage.setItem("shwndid", ls);
             } else {
-                n = 1;
                 localStorage.setItem("shwndid", "1");
-            }
-
-            
-
-            if(sessionStorage.getItem("shwndid")) {
-                //refreshed
-                out.innerHTML = "refreshed";
-            } else {
-                //first load
-                sessionStorage.setItem("shwndid", n);
-                out.innerHTML = "first load";
-                
-            }            
+                sessionStorage.setItem("shwndid","1");
+            }         
         }
 
         
         var interval = setInterval(function() {       
-
             if(localStorage.getItem("shwndid")) {
-                out.innerHTML = "num: "+localStorage.getItem("shwndid") +" id: "+sessionStorage.getItem("shwndid"); 
+                out.innerHTML = "num: "+localStorage.getItem("shwndid") +" id: "+sessionStorage.getItem("shwndid");                 
                 localStorage.setItem("shwndid"+parseInt(sessionStorage.getItem("shwndid")),window.screenX+" "+window.screenY); 
             }
             list.innerHTML= "";
-            // for(let i=1;i<=parseInt(localStorage.getItem("shwndid"));i++) {
-            //     list.innerHTML += localStorage.getItem("shwndid"+i) + "\n";
-            // }
-
+            let ls = localStorage.getItem("shwndid");
+            let arr = ls.split(",");
+            for(let i in arr) {
+                list.innerHTML += arr[i] + ": "+ localStorage.getItem("shwndid"+arr[i])+"\n";
+            }
         }, 0);
 
 
-        window.onunload = function (e) {
-        
-            // let l = localStorage.getItem("shwndid");
-            // let arr = l.split(",");
-            // let n = parseInt(sessionStorage.getItem("shwndid"));
-            // l=""
-            // for(let i=0;i<arr.length;i++)
-            // {
-            //     if(arr[i] == n) continue;
-            //     l+=arr[i]+",";
-            // }
-            // console.log(l);
-            // localStorage.setItem("shwndid", l);
-            
-            // let n = parseInt(localStorage.getItem("shwndid"));
-            // if(n>1) {
-            //     n--;
-            //     localStorage.setItem("shwndid", n);
-            // }
-            // else {
-            //     localStorage.removeItem("shwndid");
-            // }           
-        
+        window.onunload = function (e) {        
+            let ls = localStorage.getItem("shwndid");
+            let arr = ls.split(",");
+            let n = parseInt(arr.indexOf(sessionStorage.getItem("shwndid")));
+            if(n>-1) arr.splice(n,1);
+            ls = arr.join(",");
+            localStorage.setItem("shwndid", ls);        
         };
         
     </script>
