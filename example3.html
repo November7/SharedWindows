@@ -3,38 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shared Windows ver:2.0</title>
+    <title>Shared Windows ver:3.0</title>
     <style>
-        body {
-            background-color: #000;
-            overflow: hidden; 
-        }
-        #output {
-            color: #fff;
-            height:auto;
-        }
+       * { margin: 0; padding: 0;}
 
-        #output table {
-            border: 1px solid white;
-            border-collapse: collapse;
-            width: 80%;
-        }
+        body, html { height:100%; }
 
-        #output table td {
-            border: 1px solid white;
-            padding: 5px;
-            width: 20%;
-        }
+        /* #out {
+            position:absolute;
+            width:100%;
+            height:100%;
+        } */
     </style>
 </head>
 <body>
-    <div id="output"></div>
-    <!-- <textarea readonly placeholder="..." id="list" cols="30" rows="10"></textarea> -->
-    <script>
 
-        let out = document.getElementById("output");
-        // let list = document.getElementById("list");
-        // let shwndid;
+    <canvas id="out" width="1000" height="1000"></canvas>
+    <script>
+        const draw = (ctx,x,y) => {
+            ctx.clearRect(0, 0,1000,1000)
+            ctx.beginPath();
+            ctx.arc(x, y, 40, 0, 2 * Math.PI);
+            ctx.font = "10px Arial";
+            ctx.fillText("["+x+","+y+"]", x, y);
+            ctx.stroke();
+        }
+
+        let ctx = document.getElementById("out").getContext("2d");
 
         window.onload = function(e) {
             let ss = sessionStorage.getItem("shwndid");
@@ -59,29 +54,22 @@
         }
 
         
-        var interval = setInterval(function() {      
-            let innerHTML = ""; 
+        var interval = setInterval(function() { 
             if(localStorage.getItem("shwndid")) {
                 let shwndid = parseInt(sessionStorage.getItem("shwndid"));
-                let info = "<td>"+window.screenX+"</td><td>"+window.screenY + "</td><td>"+window.innerWidth + "</td><td>"+window.innerHeight+"</td>";
+                let info = window.screenX+","+window.screenY;
                 
                 localStorage.setItem("shwndid"+shwndid,info); 
-
-                innerHTML = "<table>";
-                innerHTML += "<tr><td colspan='5'>Number of windows: "+localStorage.getItem("shwndid")+", id: "+sessionStorage.getItem("shwndid")+"</td></tr>";
-                innerHTML += "<tr><td>id</td><td>X</td><td>Y</td><td>Width</td><td>Height</td></tr>";
-                innerHTML += "<tr><td>Current window</td>"+info+"</tr>";     
 
                 let ls = localStorage.getItem("shwndid");
                 let arr = ls.split(",");
                 for(let i in arr) {
-                    // list.innerHTML += arr[i] + ": "+ localStorage.getItem("shwndid"+arr[i])+"\n";
-                    innerHTML += "<tr><td>"+arr[i]+"</td>"+localStorage.getItem("shwndid"+arr[i])+"</tr>";  
+                    console.log(arr[i] + ": "+ localStorage.getItem("shwndid"+arr[i]));  
                 }
 
-                innerHTML += "</table>";
+                draw(ctx,window.innerWidth/2,window.innerHeight/2);
+
             }
-            out.innerHTML = innerHTML;
 
         }, 1);
 
@@ -90,7 +78,7 @@
             let ls = localStorage.getItem("shwndid");
             let arr = ls.split(",");
             let n = parseInt(arr.indexOf(sessionStorage.getItem("shwndid")));
-            if(n>-1) arr.splice(n,1);
+            if(n > -1) arr.splice(n,1);
             ls = arr.join(",");
             localStorage.setItem("shwndid", ls);        
         };
