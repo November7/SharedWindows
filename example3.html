@@ -20,12 +20,12 @@
 
     <canvas id="out" width="1000" height="1000"></canvas>
     <script>
-        const draw = (ctx,x,y) => {
+        const draw = (ctx,x,y,rx,ry) => {
             ctx.clearRect(0, 0,1000,1000)
             ctx.beginPath();
             ctx.arc(x, y, 40, 0, 2 * Math.PI);
             ctx.font = "10px Arial";
-            ctx.fillText("["+x+","+y+"]", x, y);
+            ctx.fillText("["+rx+","+ry+"]", x, y);
             ctx.stroke();
         }
 
@@ -57,17 +57,21 @@
         var interval = setInterval(function() { 
             if(localStorage.getItem("shwndid")) {
                 let shwndid = parseInt(sessionStorage.getItem("shwndid"));
-                let info = window.screenX+","+window.screenY;
+                let info = window.screenX+","+window.screenY+","+window.innerWidth+","+window.innerHeight;
                 
                 localStorage.setItem("shwndid"+shwndid,info); 
 
                 let ls = localStorage.getItem("shwndid");
                 let arr = ls.split(",");
                 for(let i in arr) {
-                    console.log(arr[i] + ": "+ localStorage.getItem("shwndid"+arr[i]));  
+                    let hwnds = localStorage.getItem("shwndid"+arr[i]);
+                    let ahwnds = hwnds.split(",");
+                    console.log(ahwnds);  
+                    draw(ctx,parseInt(ahwnds[0])+parseInt(ahwnds[2])/2-window.screenX,parseInt(ahwnds[1])+parseInt(ahwnds[3])/2-window.screenY,parseInt(ahwnds[2]),parseInt(ahwnds[3]));
+
                 }
 
-                draw(ctx,window.innerWidth/2,window.innerHeight/2);
+                // draw(ctx,window.innerWidth/2,window.innerHeight/2,window.screenX+window.innerWidth/2,window.screenY+window.innerHeight/2);
 
             }
 
