@@ -1,2 +1,2 @@
 # SharedWindows
-Simple example of JS
+Simple example of JS ... 4fun
