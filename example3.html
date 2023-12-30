@@ -7,29 +7,48 @@
     <style>
        * { margin: 0; padding: 0;}
 
-        body, html { height:100%; }
+        body, html { height:100%; overflow: hidden;}
 
-        /* #out {
-            position:absolute;
-            width:100%;
-            height:100%;
-        } */
+        body {
+            width: 500 px;
+            height: 500 px;
+        }
+
+        #out {
+            background-color: black;
+        } 
     </style>
 </head>
 <body>
 
-    <canvas id="out" width="1000" height="1000"></canvas>
+    <canvas id="out" width="1920" height="1080"></canvas>
     <script>
-        const draw = (ctx,x,y,rx,ry) => {
-            ctx.clearRect(0, 0,1000,1000)
-            ctx.beginPath();
-            ctx.arc(x, y, 40, 0, 2 * Math.PI);
-            ctx.font = "10px Arial";
-            ctx.fillText("["+rx+","+ry+"]", x, y);
-            ctx.stroke();
+        const drawParticle = (ctx,x,y,rx,ry,c) => {
+            ctx.fillStyle = c;
+            let fx,fy;
+            for(let fi = 0;fi<20*6.28;fi+=0.2)
+            {              
+                rx += .5*(Math.random()-0.5);  
+                ry += .5*(Math.random()-0.5);
+                fx = x+rx*Math.sin(fi);
+                fy = y+ry*Math.cos(fi);
+                fx += 10*(Math.random()-0.5);  
+                fy += 10*(Math.random()-0.5);
+                ctx.fillRect(Math.floor(fx), Math.floor(fy), 1, 1);
+                
+            }
         }
 
         let ctx = document.getElementById("out").getContext("2d");
+        const colors = [
+                    '#ff0000',  
+                    '#00ff00',  
+                    '#0000ff',
+                    '#00ffff',
+                    '#ff00ff',
+                    '#ffff00'
+                ];
+        let ncolors = colors.length;
 
         window.onload = function(e) {
             let ss = sessionStorage.getItem("shwndid");
@@ -63,19 +82,26 @@
 
                 let ls = localStorage.getItem("shwndid");
                 let arr = ls.split(",");
+                let num = arr.length;
+                ctx.clearRect(0, 0,1920,1080);
+                
+                ctx.font = "10px Arial";
+                ctx.fillText(num, 10, 10);
+               
+                let j = 0;
+
                 for(let i in arr) {
                     let hwnds = localStorage.getItem("shwndid"+arr[i]);
-                    let ahwnds = hwnds.split(",");
-                    console.log(ahwnds);  
-                    draw(ctx,parseInt(ahwnds[0])+parseInt(ahwnds[2])/2-window.screenX,parseInt(ahwnds[1])+parseInt(ahwnds[3])/2-window.screenY,parseInt(ahwnds[2]),parseInt(ahwnds[3]));
-
+                    let ahwnds = hwnds.split(",");  
+                    
+                    drawParticle(ctx,ahwnds[0]-window.screenX+window.innerWidth/2, ahwnds[1]-window.screenY+window.innerHeight/2,50,50,colors[j%ncolors]);
+                    j++;
                 }
 
-                // draw(ctx,window.innerWidth/2,window.innerHeight/2,window.screenX+window.innerWidth/2,window.screenY+window.innerHeight/2);
 
             }
 
-        }, 1);
+        }, 25);
 
 
         window.onunload = function (e) {        
