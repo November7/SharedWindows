@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shared Windows ver:3.0</title>
+    <title>Shared Windows ver:4.0</title>
     <script src="./sharedwnd.js"></script> 
     <style>
        * { margin: 0; padding: 0;}
@@ -33,17 +33,25 @@
             clearSharedWnd();
         }
 
-        const drawParticle = (ctx,x,y,rx,ry,c) => {
+        const drawParticle = (ctx,x,y,rx,ry,c,t) => {
+            t = [1000-window.screenX,600-window.screenY];
+            ctx.fillRect(Math.floor(t[0]), Math.floor(t[1]), 1, 1);
             ctx.fillStyle = c;
             let fx,fy;
-            for(let fi = 0;fi<5*6.28;fi+=0.01)
+            for(let fi = 0;fi<5*6.28;fi+=0.005)
             {              
-                rx += .3*(Math.random()-0.5);  
-                ry += .3*(Math.random()-0.5);
+                 rx += .3*(Math.random()-0.5);  
+                 ry += .3*(Math.random()-0.5);
                 fx = x+rx*Math.sin(fi);
                 fy = y+ry*Math.cos(fi);
-                fx += 30*(Math.random()-0.5);  
-                fy += 30*(Math.random()-0.5);
+                // let d = Math.sqrt((fx-t[0])*(fx-t[0])+(fy-t[1])*(fy-t[1]));
+                
+
+                // fx += (1/(100-d))*t[0]*Math.sin(fi);
+                // fy += (1/(100-d))*t[1]*Math.cos(fi);
+
+                 fx += 30*(Math.random()-0.5);  
+                 fy += 30*(Math.random()-0.5);
                 ctx.fillRect(Math.floor(fx), Math.floor(fy), 1, 1);
                 
             }
@@ -81,7 +89,7 @@
                     let hwnds = localStorage.getItem("shwndid"+arr[i]);
                     let ahwnds = hwnds.split(",");  
                     
-                    drawParticle(ctx,ahwnds[0]-window.screenX+window.innerWidth/2, ahwnds[1]-window.screenY+window.innerHeight/2,150,150,colors[j%ncolors]);
+                    drawParticle(ctx,ahwnds[0]-window.screenX+window.innerWidth/2, ahwnds[1]-window.screenY+window.innerHeight/2,50,50,colors[j%ncolors]);
                     j++;
                 }
 

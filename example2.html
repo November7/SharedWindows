@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shared Windows ver:2.0</title>
+    <script src="sharedwnd.js" async=false defer></script> 
     <style>
         body {
             background-color: #000;
@@ -29,35 +30,15 @@
 </head>
 <body>
     <div id="output"></div>
-    <!-- <textarea readonly placeholder="..." id="list" cols="30" rows="10"></textarea> -->
-    <script>
-
-        let out = document.getElementById("output");
-        // let list = document.getElementById("list");
-        // let shwndid;
-
-        window.onload = function(e) {
-            let ss = sessionStorage.getItem("shwndid");
-            let ls = localStorage.getItem("shwndid");
-            let n = 0;
-            if(ls) {
-                let arr = ls.split(",");
-                if(ss) {
-                    //refreshed window   
-                } else {
-                    //first load this window
-                    ss = arr.length + 1;  
-                    sessionStorage.setItem("shwndid",ss);          
-                }
-                arr.push(ss);
-                ls = arr.join(",");
-                localStorage.setItem("shwndid", ls);
-            } else {
-                localStorage.setItem("shwndid", "1");
-                sessionStorage.setItem("shwndid","1");
-            }         
+    <script>              
+        window.onload = function() {
+            initSharedWnd();
+        }
+        window.onunload = function() {
+            clearSharedWnd();
         }
 
+        let out = document.getElementById("output");
         
         var interval = setInterval(function() {      
             let innerHTML = ""; 
@@ -83,17 +64,7 @@
             }
             out.innerHTML = innerHTML;
 
-        }, 1);
-
-
-        window.onunload = function (e) {        
-            let ls = localStorage.getItem("shwndid");
-            let arr = ls.split(",");
-            let n = parseInt(arr.indexOf(sessionStorage.getItem("shwndid")));
-            if(n>-1) arr.splice(n,1);
-            ls = arr.join(",");
-            localStorage.setItem("shwndid", ls);        
-        };
+        }, 25);        
         
     </script>
 </body>
