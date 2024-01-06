@@ -33,31 +33,38 @@
             clearSharedWnd();
         }
 
-        const drawParticle = (ctx,x,y,rx,ry,c,t) => {
-            t = [1000-window.screenX,600-window.screenY];
-            ctx.fillRect(Math.floor(t[0]), Math.floor(t[1]), 1, 1);
-            ctx.fillStyle = c;
-            let fx,fy;
-            for(let fi = 0;fi<5*6.28;fi+=0.005)
-            {              
-                 rx += .3*(Math.random()-0.5);  
-                 ry += .3*(Math.random()-0.5);
-                fx = x+rx*Math.sin(fi);
-                fy = y+ry*Math.cos(fi);
-                // let d = Math.sqrt((fx-t[0])*(fx-t[0])+(fy-t[1])*(fy-t[1]));
+        // const drawParticle = (ctx,x,y,rx,ry,c,t) => {
+        //     t = [1000-window.screenX,600-window.screenY];
+        //     ctx.fillRect(Math.floor(t[0]), Math.floor(t[1]), 1, 1);
+        //     ctx.fillStyle = c;
+        //     let fx,fy;
+        //     for(let fi = 0;fi<5*6.28;fi+=0.005)
+        //     {              
+        //          rx += .3*(Math.random()-0.5);  
+        //          ry += .3*(Math.random()-0.5);
+        //         fx = x+rx*Math.sin(fi);
+        //         fy = y+ry*Math.cos(fi);
+        //         // let d = Math.sqrt((fx-t[0])*(fx-t[0])+(fy-t[1])*(fy-t[1]));
                 
 
-                // fx += (1/(100-d))*t[0]*Math.sin(fi);
-                // fy += (1/(100-d))*t[1]*Math.cos(fi);
+        //         // fx += (1/(100-d))*t[0]*Math.sin(fi);
+        //         // fy += (1/(100-d))*t[1]*Math.cos(fi);
 
-                 fx += 30*(Math.random()-0.5);  
-                 fy += 30*(Math.random()-0.5);
-                ctx.fillRect(Math.floor(fx), Math.floor(fy), 1, 1);
+        //          fx += 30*(Math.random()-0.5);  
+        //          fy += 30*(Math.random()-0.5);
+        //         ctx.fillRect(Math.floor(fx), Math.floor(fy), 1, 1);
                 
-            }
-        }
+        //     }
+        // }
 
         let ctx = document.getElementById("out").getContext("2d");
+
+        // let mouseX=0,mouseY=0;
+        // document.getElementsByTagName("body")[0].addEventListener("mousemove",function(e) {
+        //     mouseX = e.clientX;
+        //     mouseY = e.clientY;
+
+        // })
         const colors = [
                     '#ff0000',  
                     '#00ff00',  
@@ -67,6 +74,7 @@
                     '#ffff00'
                 ];
         let ncolors = colors.length;
+        let ncounter = 0;
         
         var interval = setInterval(function() { 
             if(localStorage.getItem("shwndid")) {
@@ -83,17 +91,55 @@
                 ctx.font = "10px Arial";
                 ctx.fillText(num, 10, 10);
                
+
+                let R = 150;
+                let RR = R*R;
+
+                let obj = []
+
                 let j = 0;
 
-                for(let i in arr) {
-                    let hwnds = localStorage.getItem("shwndid"+arr[i]);
-                    let ahwnds = hwnds.split(",");  
+                for(let _ in arr) {
+                    let hwnds = localStorage.getItem("shwndid"+arr[_]);
+                    let ahwnds = hwnds.split(","); 
+                    obj.push({x: ahwnds[0], y: ahwnds[1], id: _})
                     
-                    drawParticle(ctx,ahwnds[0]-window.screenX+window.innerWidth/2, ahwnds[1]-window.screenY+window.innerHeight/2,50,50,colors[j%ncolors]);
-                    j++;
                 }
 
+                let n = obj.length;
+                let vel = (ncounter) / 200;
+                for(let _ = 0 ; _ < n ; _++) {
+                    // console.log(ahwnds)
+                    ctx.fillStyle = colors[_%ncolors];
+                    
+                    let sx = obj[_].x-window.screenX+window.innerWidth/2;
+                    let sy = obj[_].y-window.screenY+window.innerHeight/2;
 
+                    for(let fi=0;fi<6.2;fi+=.1) {
+                        let x = R*Math.cos(fi+vel) + sx;
+                        let y = R*Math.sin(fi+vel) + sy;
+
+                        //gravity
+
+                        // for(let __ = 0 ; __ < n ; __++) {
+                        //     if(_ == __) continue;
+                        //     let _sx = obj[__].x-window.screenX+window.innerWidth/2;
+                        //     let _sy = obj[__].y-window.screenY+window.innerHeight/2;
+                        //     let dd = Math.sqrt((sx - _sx)*(sx - _sx) + (sy - _sy)*(sy - _sy));   
+
+                        //     let d = ((_sx - x)*(_sx - x) + (_sy - y)*(_sy - y));
+                        //     if(dd>R){
+                        //         x += 3*RR*(_sx-x)/d;
+                        //         y += 3*RR*(_sy-y)/d;
+                        //         // console.log(x,y)
+                        //     }
+                        // }
+                        
+                        ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
+                    }
+                }
+
+                ncounter++;
             }
 
         }, 25);
