@@ -33,38 +33,9 @@
             clearSharedWnd();
         }
 
-        // const drawParticle = (ctx,x,y,rx,ry,c,t) => {
-        //     t = [1000-window.screenX,600-window.screenY];
-        //     ctx.fillRect(Math.floor(t[0]), Math.floor(t[1]), 1, 1);
-        //     ctx.fillStyle = c;
-        //     let fx,fy;
-        //     for(let fi = 0;fi<5*6.28;fi+=0.005)
-        //     {              
-        //          rx += .3*(Math.random()-0.5);  
-        //          ry += .3*(Math.random()-0.5);
-        //         fx = x+rx*Math.sin(fi);
-        //         fy = y+ry*Math.cos(fi);
-        //         // let d = Math.sqrt((fx-t[0])*(fx-t[0])+(fy-t[1])*(fy-t[1]));
-                
-
-        //         // fx += (1/(100-d))*t[0]*Math.sin(fi);
-        //         // fy += (1/(100-d))*t[1]*Math.cos(fi);
-
-        //          fx += 30*(Math.random()-0.5);  
-        //          fy += 30*(Math.random()-0.5);
-        //         ctx.fillRect(Math.floor(fx), Math.floor(fy), 1, 1);
-                
-        //     }
-        // }
-
         let ctx = document.getElementById("out").getContext("2d");
 
-        // let mouseX=0,mouseY=0;
-        // document.getElementsByTagName("body")[0].addEventListener("mousemove",function(e) {
-        //     mouseX = e.clientX;
-        //     mouseY = e.clientY;
 
-        // })
         const colors = [
                     '#ff0000',  
                     '#00ff00',  
