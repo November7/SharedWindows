@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shared Windows ver:4.0</title>
+    <script src="./sharedwnd.js"></script> 
+    <script src="./engine3D.js"></script> 
+    <style>
+       * { margin: 0; padding: 0;}
+
+        body, html { height:100%; overflow: hidden;}
+
+        body {
+            width: 500 px;
+            height: 500 px;
+        }
+
+        #out {
+            background-color: black;
+        } 
+    </style>
+</head>
+<body>
+
+    <canvas id="out" width="1920" height="1080"></canvas>
+    <script>
+
+
+        let ctx = document.getElementById("out").getContext("2d");
+
+
+        const colors = [
+                    '255,0,0',  
+                    '0,255,0',  
+                    '0,0,255',
+                    '0,255,255',
+                    '255,0,255',
+                    '255,255,0'
+                ];
+        const rotates = [  [-.01,.01,.01],
+                            [.01,-.02,.02],
+                            [.01,.01,-.01],
+                            [-.01,-.01,.01],
+                            [.01,-.01,-.01],
+                            [-.01,.01,-.01]
+                        ]
+
+        let ncolors = colors.length;
+        let ncounter = 0;
+
+        let sph = []
+        sph.push(new CSphere(300,300,0,100,colors[0]));
+        sph.push(new CSphere(600,300,0,100,colors[1]));
+        sph.push(new CSphere(450,550,0,100,colors[2]));
+
+        function draw(){
+            window.requestAnimationFrame(draw);
+            ctx.save();
+            ctx.clearRect(0,0,1920,1080);
+            for(i in sph)
+                sph[i].draw(ctx);
+
+            ctx.restore();
+            for(i in sph) {
+                sph[i].rotate(rotates[i%6][0],rotates[i%6][1],rotates[i%6][2]);
+            }          
+        
+        }
+       
+        draw();
+        
+        
+    </script>
+</body>
+</html>
